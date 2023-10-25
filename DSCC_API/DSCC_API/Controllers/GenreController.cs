@@ -51,7 +51,7 @@ namespace DSCC_API.Controllers
             if (oldGenre == null)
                 return NotFound();
             
-            _context.Entry(genre).State = EntityState.Modified;
+            _context.Entry(oldGenre).State = EntityState.Modified;
             oldGenre.GenreName = genre.GenreName;
             
             try

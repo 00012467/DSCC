@@ -26,7 +26,7 @@ namespace DSCC_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return await _context.Games.ToListAsync();
+            return await _context.Games.Include(game=>game.GameGenre).ToListAsync();
         }
 
         // GET: api/Game/5
@@ -34,10 +34,14 @@ namespace DSCC_API.Controllers
         public async Task<ActionResult<Game>> GetGame(Guid id)
         {
             var game = await _context.Games.FindAsync(id);
-
+            
             if (game == null)
                 return NotFound();
-
+            
+            await _context.Entry(game!)
+                .Reference(g => g!.GameGenre)
+                .LoadAsync();
+            
             return game;
         }
 
@@ -46,15 +50,12 @@ namespace DSCC_API.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGame(Guid id, GameDTO game)
         {
-            if (id != game.GameId)
-                return BadRequest();
-            
             var oldGame = await _context.Games.FindAsync(id);
 
             if (oldGame == null)
                 return NotFound();
             
-            _context.Entry(game).State = EntityState.Modified;
+            _context.Entry(oldGame).State = EntityState.Modified;
             
             oldGame.GameGenre = await _context.Genres.FindAsync(game.GameGenreId);
             oldGame.GameName = game.GameName;
@@ -90,10 +91,17 @@ namespace DSCC_API.Controllers
                 ReleaseDate = gameDTO.ReleaseDate,
                 GameGenre = await _context.Genres.FindAsync(gameDTO.GameGenreId)
             };
-            _context.Games.Add(game);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetGame", new { id = game.GameId }, game);
+            try
+            {
+                _context.Games.Add(game);
+                await _context.SaveChangesAsync();
+                return Ok(game);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         // DELETE: api/Game/5
