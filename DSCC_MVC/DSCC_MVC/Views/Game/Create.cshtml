@@ -1,0 +1,41 @@
+﻿@model DSCC_MVC.Models.DTOs.GameViewModelDTO
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Create</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label asp-for="@Model.Game.GameName">Game Name:</label>
+        <input asp-for="@Model.Game.GameName" class="form-control" />
+        <span asp-validation-for="@Model.Game.GameName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Game.DeveloperName">Developer Name:</label>
+        <input asp-for="@Model.Game.DeveloperName" class="form-control" />
+        <span asp-validation-for="@Model.Game.DeveloperName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Game.EngineName">Engine Name:</label>
+        <input asp-for="@Model.Game.EngineName" class="form-control" />
+        <span asp-validation-for="@Model.Game.EngineName" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Game.ReleaseDate">Release Date:</label>
+        <input asp-for="@Model.Game.ReleaseDate" class="form-control" />
+        <span asp-validation-for="@Model.Game.ReleaseDate" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="@Model.Game.GameGenreId">Genre:</label>
+        <select asp-for="@Model.Game.GameGenreId" asp-items="@Model.Genres" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>

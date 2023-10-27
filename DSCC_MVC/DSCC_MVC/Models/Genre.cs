@@ -1,4 +1,4 @@
-﻿namespace DSCC_API.Models;
+﻿namespace DSCC_MVC.Models;
 
 public class Genre
 {
