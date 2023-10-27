@@ -42,7 +42,6 @@ namespace DSCC_API.Controllers
         }
 
         // PUT: api/Genre/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGenre(Guid id, GenreDTO genre)
         {
@@ -53,31 +52,21 @@ namespace DSCC_API.Controllers
             
             _context.Entry(oldGenre).State = EntityState.Modified;
             oldGenre.GenreName = genre.GenreName;
-            
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GenreExists(id))
-                    return NotFound();
-                else
-                    throw;
-            }
+
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
         // POST: api/Genre
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Genre>> PostGenre(Genre genre)
         {
             _context.Genres.Add(genre);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetGenre", new { id = genre.GenreId }, genre);
+            
+            // Returns created genre 
+            return CreatedAtAction("GetGenre", new { id = genre.GenreId }, genre); 
         }
 
         // DELETE: api/Genre/5
@@ -94,6 +83,7 @@ namespace DSCC_API.Controllers
             return NoContent();
         }
 
+        // Checks whether database has the genre with this id
         private bool GenreExists(Guid id)
         {
             return (_context.Genres?.Any(e => e.GenreId == id)).GetValueOrDefault();

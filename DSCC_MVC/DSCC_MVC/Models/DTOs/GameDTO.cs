@@ -2,6 +2,7 @@
 
 namespace DSCC_MVC.Models.DTOs;
 
+// Data Annotations are used to properly handle inputs
 public class GameDTO
 {
     public Guid GameId { get; set; }

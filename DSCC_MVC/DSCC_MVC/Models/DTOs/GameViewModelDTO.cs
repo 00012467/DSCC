@@ -2,6 +2,7 @@
 
 namespace DSCC_MVC.Models.DTOs;
 
+// GameViewModelDTO is created to handle Create and Edit functionalities
 public class GameViewModelDTO
 {
     public required GameDTO Game { get; set; }

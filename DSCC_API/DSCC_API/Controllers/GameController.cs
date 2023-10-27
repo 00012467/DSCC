@@ -26,7 +26,10 @@ namespace DSCC_API.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Game>>> GetGames()
         {
-            return await _context.Games.Include(game=>game.GameGenre).ToListAsync();
+            // Include method is used, so Genre model will be included in the Game objects
+            return await _context.Games
+                .Include(game=>game.GameGenre)
+                .ToListAsync();
         }
 
         // GET: api/Game/5
@@ -38,6 +41,7 @@ namespace DSCC_API.Controllers
             if (game == null)
                 return NotFound();
             
+            // Reference method is used, so Genre model will be included in the Game object
             await _context.Entry(game!)
                 .Reference(g => g!.GameGenre)
                 .LoadAsync();
@@ -46,7 +50,6 @@ namespace DSCC_API.Controllers
         }
 
         // PUT: api/Game/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutGame(Guid id, GameDTO game)
         {
@@ -57,29 +60,19 @@ namespace DSCC_API.Controllers
             
             _context.Entry(oldGame).State = EntityState.Modified;
             
+            // Updates Game with the help of GameDTO
             oldGame.GameGenre = await _context.Genres.FindAsync(game.GameGenreId);
             oldGame.GameName = game.GameName;
             oldGame.DeveloperName = game.DeveloperName;
             oldGame.EngineName = game.EngineName;
             oldGame.ReleaseDate = game.ReleaseDate;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!GameExists(id))
-                    return NotFound();
-                else
-                    throw;
-            }
+            
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
 
         // POST: api/Game
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Game>> PostGame(GameDTO gameDTO)
         {

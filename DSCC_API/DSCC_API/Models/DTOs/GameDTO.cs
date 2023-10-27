@@ -1,5 +1,6 @@
 ﻿namespace DSCC_API.Models.DTOs;
 
+// DTO of Game model without Id. GameGenreId is used instead of Genre to properly retrieve data
 public class GameDTO
 {
     public required string GameName { get; set; }
