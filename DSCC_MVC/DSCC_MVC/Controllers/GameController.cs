@@ -44,11 +44,10 @@ namespace DSCC_MVC.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult Create(GameDTO gameDto)
+        public IActionResult Create(GameViewModelDTO gameViewDto)
         {
             if (ModelState.IsValid)
-                if (GetResponseFromPost(gameDto).IsSuccessStatusCode)
+                if (GetResponseFromPost(gameViewDto.Game).IsSuccessStatusCode)
                     return RedirectToAction(nameof(Index));
             return View();
         }
@@ -64,10 +63,10 @@ namespace DSCC_MVC.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(GameDTO gameDto)
+        public IActionResult Edit(GameViewModelDTO gameDto)
         {
             if (ModelState.IsValid)
-                if (GetResponseFromPut(gameDto).IsSuccessStatusCode)
+                if (GetResponseFromPut(gameDto.Game).IsSuccessStatusCode)
                     return RedirectToAction(nameof(Index));
             return View();
         }
@@ -163,7 +162,7 @@ namespace DSCC_MVC.Controllers
                     ReleaseDate = game.ReleaseDate,
                     GameGenreId = game.GameGenre.GenreId
                 },
-                Genres = new SelectList(genres, "GenreId", "GenreName")
+                Genres = new SelectList(genres, "GenreId", "GenreName", game.GameGenre.GenreId)
             };
         }
         

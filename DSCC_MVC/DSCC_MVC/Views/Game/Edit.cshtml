@@ -5,12 +5,12 @@
 }
 
 <form asp-action="Edit">
-    @*<input type="hidden" asp-for="Game.GameId" />*@
-    <div class="form-group">
+    <input type="hidden" asp-for="Game.GameId" />
+    @*<div class="form-group">
         <label asp-for="Game.GameId" class="control-label"></label>
         <input asp-for="Game.GameId" class="form-control" readonly/> 
         <span asp-validation-for="Game.GameId" class="text-danger"></span>
-    </div>
+    </div>*@
     <div class="form-group">
         <label asp-for="Game.GameName">Game Name:</label>
         <input asp-for="Game.GameName" class="form-control" />
@@ -37,9 +37,12 @@
 
     <div class="form-group">
         <label asp-for="Game.GameGenreId">Genre:</label>
-        <select asp-for="Game.GameGenreId" asp-items="@Model.Genres" class="form-control"></select>
+        <select asp-for="Game.GameGenreId" asp-items="Model.Genres" class="form-control"></select>
     </div>
 
     <button type="submit" class="btn btn-primary">Save Changes</button>
 </form>
 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
