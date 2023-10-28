@@ -5,7 +5,9 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddHttpClient("GamesApiClient", client =>
 {
-    client.BaseAddress = new Uri("http://localhost:5277/api/");
+    var uriString = builder.Configuration.GetSection("ApiUrl").Value;
+    if (uriString != null)
+        client.BaseAddress = new Uri(uriString);
 });
 
 var app = builder.Build();

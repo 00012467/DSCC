@@ -1,6 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace DSCC_MVC.Models;
+﻿namespace DSCC_MVC.Models;
 
 public class Game
 {
